@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<title>Treino Forte</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f4f5f7;--card:#fff;--tx:#14171c;--mu:#667085;--ac:#e8590c;--ln:#e3e6ea;color-scheme:light}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--card:#1a1d24;--tx:#f1f3f5;--mu:#9aa3b2;--ac:#ff7a2f;--ln:#2a2f39;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1115;--card:#1a1d24;--tx:#f1f3f5;--mu:#9aa3b2;--ac:#ff7a2f;--ln:#2a2f39;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:84px}
+header{padding:16px 16px 8px}
+h1{margin:0;font-size:22px}
+h2{font-size:17px;margin:0 0 8px}
+.sub{color:var(--mu);font-size:13px}
+.wrap{padding:0 12px;max-width:640px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px;margin:10px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.pill{flex:1;min-width:44px;text-align:center;padding:10px 4px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font-weight:600;font-size:14px}
+.pill.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.seg{display:flex;gap:6px;margin:8px 0}
+.seg button{flex:1;padding:12px;border-radius:12px;border:1px solid var(--ln);background:var(--card);color:var(--tx);font-weight:700;font-size:15px}
+.seg button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.ex{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--ln)}
+.ex:last-child{border:0}
+.ex input[type=checkbox]{width:26px;height:26px;accent-color:var(--ac);flex:none}
+.ex .n{font-weight:600}
+.ex.ok .n{text-decoration:line-through;color:var(--mu)}
+a.btn,button.btn{display:inline-block;background:var(--ac);color:#fff;text-decoration:none;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px}
+a.alt{background:transparent;color:var(--ac);border:1px solid var(--ac)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{font-size:12px;color:var(--mu);display:block}
+input,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font-size:16px}
+.kpi{background:var(--bg);border-radius:10px;padding:10px}
+.kpi b{display:block;font-size:20px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{padding:6px 4px;border-bottom:1px solid var(--ln);text-align:right}
+td:first-child,th:first-child{text-align:left}
+.up{color:#2f9e44}.dn{color:#e03131}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;padding:12px 4px;border:0;background:none;color:var(--mu);font-weight:700;font-size:13px}
+nav button.on{color:var(--ac)}
+.scroll{overflow-x:auto}
+.hide{display:none}
+small{color:var(--mu)}
+</style>
+</head>
+<body>
+<header class="wrap"><h1>💪 Treino Forte</h1><div class="sub">Musculação de segunda a sábado · massa ou definição</div></header>
+<div class="wrap">
+
+<section id="t-treino">
+  <div class="seg"><button id="mMassa">Ganho de massa</button><button id="mDef">Definição</button></div>
+  <div class="row" id="days"></div>
+  <div class="card"><h2 id="dTitle"></h2><div class="sub" id="dInfo"></div><div id="exs"></div></div>
+  <div class="card hide" id="ajuste"></div>
+  <div class="card" id="cardio"></div>
+  <div class="card"><h2>🎧 Música do treino</h2><div id="mus"></div></div>
+  <div class="card sub" id="est"></div>
+</section>
+
+<section id="t-perfil" class="hide">
+  <div class="card"><h2>Dados pessoais</h2>
+    <div class="grid">
+      <div><label>Sexo</label><select id="sexo"><option value="m">Masculino</option><option value="f">Feminino</option></select></div>
+      <div><label>Idade (anos)</label><input id="idade" type="number" inputmode="decimal"></div>
+      <div><label>Altura (cm)</label><input id="altura" type="number" inputmode="decimal"></div>
+      <div><label>Peso (kg)</label><input id="peso" type="number" inputmode="decimal" step="0.1"></div>
+    </div>
+    <label style="margin-top:8px">Nível de atividade fora do treino</label>
+    <select id="ativ"><option value="1.375">Leve (treina 1–3x/sem)</option><option value="1.55" selected>Moderado (3–5x/sem)</option><option value="1.725">Intenso (6x/sem)</option><option value="1.9">Muito intenso</option></select>
+  </div>
+  <div class="card"><h2>Medidas (cm)</h2>
+    <div class="grid" id="meds"></div>
+    <small>Meça sempre no mesmo horário, com fita relaxada. Pescoço, cintura (altura do umbigo) e quadril são usados no cálculo de gordura corporal.</small>
+    <div style="margin-top:10px"><button class="btn" id="save">Salvar medição de hoje</button></div>
+  </div>
+  <div class="card"><h2>⚖️ Simetria (direito x esquerdo)</h2><div id="sim"></div></div>
+  <div class="card"><h2>Resultados e metas</h2><div id="res" class="grid"></div><div id="meta" class="sub" style="margin-top:8px"></div></div>
+</section>
+
+<section id="t-evol" class="hide">
+  <div class="card"><h2>Evolução</h2><div class="scroll" id="evol"></div><div style="margin-top:10px"><button class="btn alt" style="background:none" id="clr">Apagar histórico</button></div></div>
+</section>
+
+<section id="t-sobre" class="hide">
+  <div class="card"><h2>Base científica</h2>
+  <p>A estrutura segue princípios amplamente ensinados por pesquisadores e treinadores de referência: volume semanal de 10–20 séries por grupo muscular, treino próximo da falha, sobrecarga progressiva e frequência de 2x por grupo (Brad Schoenfeld, Mike Israetel, Eric Helms, Jeff Nippard, Layne Norton, Arnold Schwarzenegger – <i>Enciclopédia do Fisiculturismo</i>).</p>
+  <p><b>Massa:</b> 6–10 reps pesadas, 90–120 s de descanso, leve superávit calórico. <b>Definição:</b> 10–15 reps, 45–60 s de descanso, déficit moderado, proteína alta e finalizador de cardio.</p>
+  <p><b>Equipamentos usados:</b> barra fixa, paralelas, banco para abdominal, supinos reto, inclinado e declinado, rosca Scott, banco extensor, barra com agachamento, halteres e barra W. Nos supinos e no agachamento com carga alta, use suporte de segurança ou peça ajuda a alguém.</p><p>Os vídeos abrem a busca do YouTube pelo exercício; escolha um canal de sua confiança. Os cálculos são estimativas (Mifflin-St Jeor e método da Marinha dos EUA) e não substituem avaliação de médico, nutricionista ou profissional de educação física. Se sentir dor, pare o exercício.</p>
+  <p><b>Instalar no Samsung A06:</b> abra este link no Chrome → menu ⋮ → <i>Adicionar à tela inicial</i> / <i>Instalar app</i>.</p></div>
+</section>
+</div>
+<nav><button data-t="treino" class="on">🏋️ Treino</button><button data-t="perfil">📏 Perfil</button><button data-t="evol">📈 Evolução</button><button data-t="sobre">ℹ️ Sobre</button></nav>
+
+<script>
+const $=id=>document.getElementById(id);
+const L=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}};
+const P=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const yt=q=>'https://www.youtube.com/results?search_query='+encodeURIComponent(q);
+const sp=q=>'https://open.spotify.com/search/'+encodeURIComponent(q);
+// [nome, série massa, série definição]
+const D=[
+{d:'Seg',t:'Peito + Tríceps',m:'Tiësto - The Business',x:[['Supino reto com barra','4x6-8','3x10-12'],['Supino inclinado com halteres','3x8-10','3x12-15'],['Supino declinado com barra','3x8-10','3x12'],['Mergulho nas paralelas (tronco ereto, foco tríceps)','3x8-12','3xfalha'],['Tríceps testa com barra W','3x8-10','3x12-15']]},
+{d:'Ter',t:'Costas + Bíceps',m:'Eminem - Till I Collapse',x:[['Barra fixa pegada pronada','4x6-10','3xfalha'],['Remada curvada com barra','4x6-8','3x10-12'],['Remada unilateral com halter (apoiado no banco)','3x8-10','3x12'],['Pullover com halter no banco','3x10-12','3x15'],['Rosca direta com barra W','3x8-10','3x12-15'],['Rosca martelo com halteres','3x10-12','3x15']]},
+{d:'Qua',t:'Pernas (quadríceps)',m:'Kanye West - Stronger',x:[['Agachamento livre com barra','4x6-8','3x10-12'],['Agachamento búlgaro com halteres','3x8-10','3x12 cada'],['Cadeira extensora (banco extensor)','3x10-12','3x15'],['Stiff com halteres','3x8-10','3x12-15'],['Panturrilha em pé com halteres','4x10-15','4x15-20']]},
+{d:'Qui',t:'Ombros + Abdômen',m:'Swedish House Mafia - Don\u2019t You Worry Child',x:[['Desenvolvimento com halteres sentado','4x6-10','3x10-12'],['Elevação lateral com halteres','4x10-15','4x15'],['Crucifixo inverso com halteres (curvado)','3x12-15','3x15'],['Encolhimento com halteres','3x10-12','3x15'],['Abdominal no banco declinado','3x12-15','3x15-20'],['Elevação de pernas na barra fixa','3x8-12','3x12-15']]},
+{d:'Sex',t:'Superiores (peito + costas)',m:'Alok - Hear Me Now',x:[['Supino inclinado com barra','4x6-8','3x10-12'],['Barra fixa supinada (pegada fechada)','4x6-10','3xfalha'],['Mergulho nas paralelas (tronco inclinado, foco peito)','3x8-12','3xfalha'],['Remada curvada supinada com barra','3x8-10','3x12'],['Rosca Scott com barra W','3x8-10','3x12-15'],['Tríceps francês com halter','3x8-10','3x12-15']]},
+{d:'Sáb',t:'Posterior + Glúteos',m:'Avicii - Levels',x:[['Levantamento terra romeno com barra','4x6-8','3x10-12'],['Hip thrust no banco com barra','4x8-10','3x12-15'],['Passada / afundo com halteres','3x8-10','3x12 cada'],['Agachamento sumô com halter','3x10-12','3x15'],['Panturrilha sentada com halter no joelho','4x12-15','4x15-20'],['Abdominal infra no banco','3x12-15','3x15-20']]}
+];
+const CAMPOS=[['pescoco','Pescoço'],['ombros','Ombros'],['peito','Peito'],['cintura','Cintura'],['abdomen','Abdômen'],['quadril','Quadril'],['bicepsD','Bíceps dir.'],['bicepsE','Bíceps esq.'],['tricepsD','Tríceps dir.'],['tricepsE','Tríceps esq.'],['antebracoD','Antebraço dir.'],['antebracoE','Antebraço esq.'],['coxaD','Coxa dir.'],['coxaE','Coxa esq.'],['pantD','Panturrilha dir.'],['pantE','Panturrilha esq.']];
+let mode=L('mode','massa');
+let day=Math.min(Math.max(new Date().getDay()-1,0),5);
+const wk=Math.floor((Date.now()-3*864e5)/(7*864e5));
+let done=L('done',{});
+const isDark=()=>{};
+
+function renderDays(){
+  $('days').innerHTML=D.map((x,i)=>`<button class="pill ${i==day?'on':''}" data-i="${i}">${x.d}</button>`).join('');
+  $('days').querySelectorAll('button').forEach(b=>b.onclick=()=>{day=+b.dataset.i;renderTreino()});
+}
+function renderTreino(){
+  $('mMassa').className=mode=='massa'?'on':'';$('mDef').className=mode=='def'?'on':'';
+  renderDays();
+  const w=D[day];
+  $('dTitle').textContent=w.d+' · '+w.t;
+  $('dInfo').textContent=mode=='massa'?'Foco em carga e progressão · descanso 90–120 s':'Foco em densidade e gasto calórico · descanso 45–60 s';
+  $('exs').innerHTML=w.x.map((e,i)=>{
+    const k=[wk,mode,day,i].join('|');
+    return `<div class="ex ${done[k]?'ok':''}"><input type="checkbox" data-k="${k}" ${done[k]?'checked':''}><div style="flex:1"><div class="n">${e[0]}</div><small>${mode=='massa'?e[1]:e[2]} séries x reps</small></div><a class="btn alt" target="_blank" rel="noopener" href="${yt('como fazer '+e[0]+' execução correta')}">▶ Vídeo</a></div>`}).join('');
+  $('exs').querySelectorAll('input').forEach(c=>c.onchange=()=>{done[c.dataset.k]=c.checked;P('done',done);c.closest('.ex').classList.toggle('ok',c.checked)});
+  $('cardio').innerHTML=mode=='def'?`<h2>🔥 Finalizador de cardio</h2><div class="sub">15–20 min de HIIT (30 s forte / 60 s leve) com pular corda, burpees ou polichinelos, ou corrida/caminhada rápida na rua.</div><div style="margin-top:8px"><a class="btn alt" target="_blank" rel="noopener" href="${yt('treino HIIT 20 minutos sem equipamento')}">▶ Vídeo de HIIT</a></div>`:`<h2>📈 Progressão</h2><div class="sub">Quando completar o topo das repetições em todas as séries, aumente a carga em 2–5%.</div>`;
+  renderMus();renderAj();
+  const p=L('perfil',null),kg=p&&+p.peso;
+  $('est').textContent=kg?`Gasto estimado: ≈ ${Math.round(5*kg)} kcal em 60 min de musculação`+(mode=='def'?` + ≈ ${Math.round(8*kg/3)} kcal no cardio de 20 min.`:'.'):'Preencha seu peso na aba Perfil para ver o gasto calórico estimado.';
+}
+const MUS=[
+['Tiësto - The Business','Tiësto - Jackie Chan','Martin Garrix - Animals','David Guetta - Titanium','Calvin Harris - This Is What You Came For','Axwell Λ Ingrosso - More Than You Know'],
+['Eminem - Till I Collapse','Eminem - Lose Yourself','50 Cent - In Da Club','Linkin Park - Faint','Rage Against the Machine - Killing in the Name','Metallica - Enter Sandman'],
+['Kanye West - Stronger','Survivor - Eye of the Tiger','Imagine Dragons - Believer','AC/DC - Thunderstruck','Queen - Don’t Stop Me Now','Metallica - Master of Puppets'],
+['Swedish House Mafia - Don’t You Worry Child','Avicii - Wake Me Up','Skrillex - Bangarang','Zedd - Clarity','Alesso - Heroes','Daft Punk - Harder, Better, Faster, Stronger'],
+['Alok & Bruno Martini - Hear Me Now','Alok - Big Jet Plane','Kygo - Firestone','Major Lazer - Lean On','Marshmello - Alone','Dua Lipa - Physical'],
+['Avicii - Levels','Avicii - Hey Brother','Calvin Harris - Summer','The Weeknd - Blinding Lights','Coldplay - Viva la Vida','Pitbull - Timber']];
+const mi={};
+function nextMus(){const l=MUS[day],c=mi[day]||0;let n;do{n=Math.floor(Math.random()*l.length)}while(n==c&&l.length>1);mi[day]=n;renderMus()}
+function renderMus(){
+  const m=MUS[day][mi[day]||0];
+  $('mus').innerHTML=`<div style="font-weight:600;margin-bottom:8px">${m}</div><div class="row"><a id="pY" class="btn" target="_blank" rel="noopener" href="${yt(m+' official music video')}">▶ YouTube</a><a id="pS" class="btn alt" target="_blank" rel="noopener" href="${sp(m)}">Spotify</a><button class="btn alt" style="background:none" id="pN">🔀 Outra</button></div><small>A cada toque em ▶ ou Spotify, a música abre e a próxima já é trocada.</small>`;
+  $('pY').onclick=()=>setTimeout(nextMus,400);$('pS').onclick=()=>setTimeout(nextMus,400);$('pN').onclick=nextMus;
+}
+$('mMassa').onclick=()=>{mode='massa';P('mode',mode);renderTreino();calc()};
+$('mDef').onclick=()=>{mode='def';P('mode',mode);renderTreino();calc()};
+
+// Perfil
+$('meds').innerHTML=CAMPOS.map(c=>`<div><label>${c[1]}</label><input id="${c[0]}" type="number" inputmode="decimal" step="0.1"></div>`).join('');
+const IDS=['sexo','idade','altura','peso','ativ',...CAMPOS.map(c=>c[0])];
+const PARES=[['biceps','Bíceps'],['triceps','Tríceps'],['antebraco','Antebraço'],['coxa','Coxa'],['pant','Panturrilha']];
+const COR={
+biceps:{d:[1,4],t:'Faça rosca Scott unilateral com halter, rosca alternada e martelo unilateral; troque a barra W por halteres.'},
+triceps:{d:[0,4],t:'Use tríceps francês unilateral com halter e coice (kickback) no lugar do testa com barra W.'},
+antebraco:{d:[1,3],t:'Faça rosca de punho unilateral com halter, rosca inversa e martelo; pendure-se na barra fixa 3x20-40 s.'},
+coxa:{d:[2,5],t:'Priorize agachamento búlgaro, passada com halteres e extensora unilateral no banco extensor.'},
+pant:{d:[2,5],t:'Faça panturrilha unilateral em degrau com halter (em pé) e sentada unilateral, 4x12-15 no lado fraco.'}};
+let SIM=[];
+function renderSim(p){
+  SIM=[];
+  PARES.forEach(([k,n])=>{const a=+p[k+'D'],b=+p[k+'E'];if(!a||!b)return;const diff=a-b,pct=Math.abs(diff)/Math.max(a,b)*100;SIM.push({k,n,a,b,diff,pct,lvl:pct<2?0:pct<4?1:2,fraco:diff>0?'esquerdo':'direito'})});
+  const el=$('sim');
+  if(!SIM.length){el.innerHTML='<div class="sub">Preencha direito e esquerdo de um mesmo item para ver a análise e as correções de treino.</div>';return}
+  el.innerHTML=SIM.map(s=>{
+    const cor=s.lvl==0?'#2f9e44':s.lvl==1?'#f08c00':'#e03131';
+    const st=s.lvl==0?'Simétrico ✔':s.lvl==1?'Diferença leve':'Atenção';
+    let h=`<div style="border-left:4px solid ${cor};padding:6px 10px;margin:8px 0"><b>${s.n}</b>: D ${f(s.a)} · E ${f(s.b)} cm — diferença de ${f(Math.abs(s.diff))} cm (${f(s.pct)}%) <b style="color:${cor}">${st}</b>`;
+    if(s.lvl==0)h+='<br><small>Dentro do normal (até ~2%). Mantenha o treino atual.</small>';
+    else h+=`<br>Lado mais fraco: <b>${s.fraco}</b>. ${COR[s.k].t}<br><small>Regra: comece sempre pelo lado ${s.fraco}; no lado forte faça o mesmo peso e as mesmas repetições (sem passar disso) e acrescente 1 série extra só no lado fraco por 4–6 semanas.${s.lvl==2?' Se não houver melhora em 8 semanas, ou se sentir dor, procure um profissional.':''}${s.pct>10?' Diferença muito grande: confira se mediu no mesmo ponto, com o músculo relaxado.':''}</small>`;
+    return h+'</div>'}).join('');
+}
+function renderAj(){
+  const el=$('ajuste');
+  const l=SIM.filter(s=>s.lvl>0&&COR[s.k].d.includes(day));
+  if(!l.length){el.classList.add('hide');return}
+  el.classList.remove('hide');
+  el.innerHTML='<h2>⚖️ Correção de simetria para hoje</h2>'+l.map(s=>`<div style="margin:6px 0"><b>${s.n}</b>: o lado ${s.fraco} está ${f(Math.abs(s.diff))} cm menor. ${COR[s.k].t} Comece pelo lado ${s.fraco} e faça +1 série nele.</div>`).join('');
+}
+function loadPerfil(){const p=L('perfil',{});IDS.forEach(i=>{if(p[i]!=null&&p[i]!=='')$(i).value=p[i]})}
+function getPerfil(){const p={};IDS.forEach(i=>p[i]=$(i).value);return p}
+const f=(v,d=1)=>isFinite(v)?v.toFixed(d):'–';
+function bodyFat(p){
+  const h=+p.altura,n=+p.pescoco,c=+p.cintura,q=+p.quadril;
+  if(!h||!n||!c)return NaN;
+  if(p.sexo=='m'){if(c-n<=0)return NaN;return 495/(1.0324-0.19077*Math.log10(c-n)+0.15456*Math.log10(h))-450}
+  if(!q||c+q-n<=0)return NaN;
+  return 495/(1.29579-0.35004*Math.log10(c+q-n)+0.221*Math.log10(h))-450;
+}
+function calc(){
+  const p=getPerfil();P('perfil',p);renderSim(p);
+  const kg=+p.peso,h=+p.altura,a=+p.idade;
+  const R=$('res');
+  if(!kg||!h||!a){R.innerHTML='<div class="sub">Preencha idade, altura e peso.</div>';$('meta').textContent='';return}
+  const imc=kg/((h/100)**2);
+  const tmb=10*kg+6.25*h-5*a+(p.sexo=='m'?5:-161);
+  const get=tmb*(+p.ativ);
+  const bf=bodyFat(p),fat=kg*bf/100,lean=kg-fat;
+  const meta=mode=='massa'?get+300:get-450;
+  const prot=(mode=='massa'?2:2.2)*kg,gord=0.8*kg,carb=Math.max(0,(meta-prot*4-gord*9)/4);
+  const k=(t,v)=>`<div class="kpi"><small>${t}</small><b>${v}</b></div>`;
+  R.innerHTML=k('IMC',f(imc))+k('TMB (kcal)',Math.round(tmb))+k('Gasto diário (kcal)',Math.round(get))+k('Meta de calorias',Math.round(meta))+k('Gordura corporal',isFinite(bf)?f(bf)+'%':'preencha pescoço/cintura'+(p.sexo=='f'?'/quadril':''))+k('Massa magra',isFinite(bf)?f(lean)+' kg':'–')+k('Massa gorda',isFinite(bf)?f(fat)+' kg':'–')+k('Proteína / dia',Math.round(prot)+' g');
+  let t=`Macros sugeridos: ${Math.round(prot)} g proteína · ${Math.round(carb)} g carboidrato · ${Math.round(gord)} g gordura. `;
+  if(mode=='massa'){const ganho=kg*0.0025;t+=`Meta de 12 semanas: ≈ ${f(kg+ganho*12)} kg (+${f(ganho*12)} kg, cerca de 0,25% do peso por semana, priorizando massa magra).`}
+  else{const perda=kg*0.007;t+=`Meta de 12 semanas: ≈ ${f(kg-perda*12)} kg (−${f(perda*12)} kg, cerca de 0,7% por semana). Déficit de ~450 kcal/dia ≈ ${f(450*7/7700,2)} kg de gordura por semana.`;if(isFinite(bf)){t+=` Gordura-alvo estimada: ${f(Math.max(bf-4,p.sexo=='m'?8:16))}%.`}}
+  $('meta').textContent=t+' (estimativas; ajuste conforme a balança e a fita a cada 2 semanas).';
+}
+IDS.forEach(i=>$(i).addEventListener('input',()=>{calc();renderTreino()}));
+$('save').onclick=()=>{
+  const p=getPerfil();if(!+p.peso){alert('Informe o peso.');return}
+  const bf=bodyFat(p),kg=+p.peso;
+  const H=L('hist',[]);
+  H.push({dt:new Date().toLocaleDateString('pt-BR'),peso:kg,bf:bf,fat:kg*bf/100,lean:kg-kg*bf/100,...Object.fromEntries(CAMPOS.map(c=>[c[0],+p[c[0]]||null]))});
+  P('hist',H);renderEvol();alert('Medição salva! Veja na aba Evolução.');
+};
+
+// Evolução
+function renderEvol(){
+  const H=L('hist',[]);
+  if(!H.length){$('evol').innerHTML='<div class="sub">Nenhuma medição salva ainda. Preencha o Perfil e toque em “Salvar medição de hoje”.</div>';return}
+  const a=H[0],b=H[H.length-1];
+  const rows=[['peso','Peso (kg)',0],['bf','Gordura (%)',0],['fat','Massa gorda (kg)',0],['lean','Massa magra (kg)',1],...CAMPOS.map(c=>[c[0],c[1],c[0]=='cintura'||c[0]=='abdomen'?0:1])];
+  const body=rows.map(r=>{
+    const x=a[r[0]],y=b[r[0]];if(!isFinite(x)||x==null||!isFinite(y)||y==null)return'';
+    const d=y-x,good=r[2]?d>0:d<0,cls=Math.abs(d)<0.05?'':good?'up':'dn';
+    return `<tr><td>${r[1]}</td><td>${f(x)}</td><td>${f(y)}</td><td class="${cls}">${d>0?'+':''}${f(d)}</td></tr>`}).join('');
+  $('evol').innerHTML=`<div class="sub">${H.length} medição(ões) · de ${a.dt} até ${b.dt}</div><table><tr><th></th><th>Início</th><th>Atual</th><th>Δ</th></tr>${body}</table>`;
+}
+$('clr').onclick=()=>{if(confirm('Apagar todo o histórico de medições?')){P('hist',[]);renderEvol()}};
+
+// Abas
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x==b));
+  ['treino','perfil','evol','sobre'].forEach(t=>$('t-'+t).classList.toggle('hide',t!=b.dataset.t));
+  window.scrollTo(0,0);
+});
+loadPerfil();calc();renderTreino();renderEvol();
+</script>
+<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js")}catch(e){}}</script>
+</body>
+</html>
